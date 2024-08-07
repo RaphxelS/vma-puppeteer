@@ -40,7 +40,7 @@ const handleWorkerMessages = (worker, workerIndex) => {
 
   worker.on('exit', () => {
     completedWorkers++;
-    if (!stopSignalSent && completedWorkers === 1) {
+    if (!stopSignalSent && completedWorkers >= numberOfWorkers / 2) {
       // The first worker has finished, start a 30-second timer to stop all workers
       stopSignalSent = true;
       console.error(`First worker completed. Stopping all workers in 30 seconds.`);
