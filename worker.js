@@ -2,8 +2,6 @@ const puppeteer = require('puppeteer');
 const crypto = require('crypto');
 const {parentPort, workerData} = require('worker_threads');
 
-const crypto = require('crypto');
-
 const names = [
   "John", "Jane", "Michael", "Emily", "David", "Sarah", "Robert", "Jessica",
   "Liam", "Emma", "Noah", "Olivia", "Aiden", "Sophia", "Jackson", "Isabella",
