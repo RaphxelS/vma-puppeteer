@@ -2,15 +2,46 @@ const puppeteer = require('puppeteer');
 const crypto = require('crypto');
 const {parentPort, workerData} = require('worker_threads');
 
-function generateRandomString(length) {
-  return crypto.randomBytes(length).toString('hex').slice(0, length);
+const crypto = require('crypto');
+
+const names = [
+  "John", "Jane", "Michael", "Emily", "David", "Sarah", "Robert", "Jessica",
+  "Liam", "Emma", "Noah", "Olivia", "Aiden", "Sophia", "Jackson", "Isabella",
+  "Lucas", "Mia", "Ethan", "Amelia", "Mason", "Harper", "Logan", "Ella",
+  "Mateo", "Camila", "Ben", "Léa", "Arjun", "Saanvi", "Wei", "Mei", "Ahmed", "Aisha",
+  "Alejandro", "Ananya", "Hiroshi", "Yuki", "Fatima", "Omar", "Hannah", "Sophie",
+  "Dmitry", "Irina", "Juan", "Elena", "Mario", "Lucia", "Samuel", "Eva",
+  "Lars", "Freya", "Hans", "Greta", "Pierre", "Chloe", "Mohammed", "Leila",
+  "Carlos", "Maria", "Antonio", "Marta", "Igor", "Nina", "Satoshi", "Akira"
+];
+
+const surnames = [
+  "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson",
+  "Taylor", "Anderson", "Thomas", "Moore", "Martin", "Jackson", "Thompson", "White",
+  "Lopez", "Gonzalez", "Perez", "Sanchez", "Ramirez", "Torres", "Nguyen", "Kim",
+  "Chen", "Wang", "Singh", "Patel", "Kumar", "Das", "Sharma", "Gupta", "Ibrahim", "Hassan",
+  "Garcia", "Martinez", "Rodriguez", "Hernandez", "Lee", "Walker", "Hall", "Young",
+  "Allen", "King", "Scott", "Green", "Adams", "Baker", "Nelson", "Carter",
+  "Mitchell", "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans",
+  "Edwards", "Collins", "Stewart", "Morris", "Morales", "Murphy", "Cook", "Rogers"
+];
+
+function getRandomElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateRandomDigits(length) {
+  return Math.floor(Math.random() * Math.pow(10, length)).toString().padStart(length, '0');
 }
 
 function generateRandomGmail() {
-  const localPartLength = 13;
-  const localPart = generateRandomString(localPartLength);
-  return `${localPart}@gmail.com`;
+  const start_digits = generateRandomDigits(3);
+  const name = getRandomElement(names);
+  const surname = getRandomElement(surnames);
+  const end_digits = generateRandomDigits(4);
+  return `${start_digits}${name}${surname}${end_digits}@gmail.com`;
 }
+
 
 function timeout(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
