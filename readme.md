@@ -23,6 +23,6 @@ clone this repo
     node main.js [voter] [nbVotes] [thread]
    `Voter` = How many times you want to votes (e.g. 1)\
    `nbVotes` = How many votes should a voter cast (e.g. 20)\
-   `thread` = How many thread you want to use (e.g. 1)\
+   `thread` = How many thread you want to use (e.g. 1)
    
    All of the votes are screenshoted in the `screenshots/` folder and the emails used are stored in the `emails.txt` file.
