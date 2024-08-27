@@ -1,4 +1,4 @@
-const {Worker} = require('worker_threads');
+const { Worker } = require('worker_threads');
 const fs = require('fs');
 const path = require('path');
 
@@ -20,38 +20,44 @@ if (isNaN(nbVotes) || nbVotes <= 0) {
 }
 
 if (isNaN(numberOfWorkers) || numberOfWorkers <= 0) {
-  console.error(
-      'Invalid number Of Workers. Please provide a positive integer.');
+  console.error('Invalid number Of Workers. Please provide a positive integer.');
   console.error('node main.js [voter] [nbVotes] [thread]');
   process.exit(1);
 }
 
-console.log(`Starting process for ${
-    (votesPerWorker * numberOfWorkers) * nbVotes} votes!`);
+console.log(`Starting process for ${(votesPerWorker * numberOfWorkers) * nbVotes} votes!`);
 
 let emails = [];
 let completedWorkers = 0;
+let failedWorkers = 0;
 let stopSignalSent = false;
 
 const workers = [];
 
 const handleWorkerMessages = (worker, workerIndex) => {
+  let hasError = false;
+
   worker.on('message', (mail) => {
     emails.push(mail);
   });
 
-  worker.on('exit', () => {
-    completedWorkers++;
-    if (!stopSignalSent && completedWorkers >= numberOfWorkers / 2) {
-      // The first worker has finished, start a 30-second timer to stop all
-      // workers
+  worker.on('exit', (code) => {
+    if (!hasError) {
+      completedWorkers++;
+      console.error("+1 completedWorkers")
+    } else {
+      failedWorkers++;
+      console.error("+1 failedWorkers")
+    }
+
+    if (!stopSignalSent && completedWorkers + failedWorkers == numberOfWorkers) {
+      // The first worker has finished, start a 30-second timer to stop all workers
       stopSignalSent = true;
-      console.error(
-          `First worker completed. Stopping all workers in 30 seconds.`);
+      console.error(`All worker completed. Stopping all workers in 30 seconds.`);
       setTimeout(() => {
         console.log('Stopping all workers now.');
         workers.forEach(w => w.terminate());
-        fs.appendFile('emails.txt', emails.join('\n'), function(err) {
+        fs.appendFile('emails.txt', emails.join('\n'), function (err) {
           if (err) throw err;
         });
         console.log('All emails have been saved to emails.txt');
@@ -60,14 +66,16 @@ const handleWorkerMessages = (worker, workerIndex) => {
   });
 
   worker.on('error', (err) => {
+    hasError = true;  // Flag this worker as having encountered an error
     console.error(`Worker ${workerIndex} encountered an error:`, err);
   });
 };
 
 for (let i = 0; i < numberOfWorkers; i++) {
   const worker = new Worker(
-      path.resolve(__dirname, 'worker.js'),
-      {workerData: {votesPerWorker, workerIndex: i, nbVotes}});
+    path.resolve(__dirname, 'worker.js'),
+    { workerData: { votesPerWorker, workerIndex: i, nbVotes } }
+  );
 
   workers.push(worker);
   handleWorkerMessages(worker, i);

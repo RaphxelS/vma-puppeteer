@@ -13,30 +13,41 @@ function ensureDirectoryExistence(filePath) {
 }
 
 const names = [
-  'John',     'Jane',     'Michael', 'Emily',  'David',   'Sarah',  'Robert',
-  'Jessica',  'Liam',     'Emma',    'Noah',   'Olivia',  'Aiden',  'Sophia',
-  'Jackson',  'Isabella', 'Lucas',   'Mia',    'Ethan',   'Amelia', 'Mason',
-  'Harper',   'Logan',    'Ella',    'Mateo',  'Camila',  'Ben',    'Léa',
-  'Arjun',    'Saanvi',   'Wei',     'Mei',    'Ahmed',   'Aisha',  'Alejandro',
-  'Ananya',   'Hiroshi',  'Yuki',    'Fatima', 'Omar',    'Hannah', 'Sophie',
-  'Dmitry',   'Irina',    'Juan',    'Elena',  'Mario',   'Lucia',  'Samuel',
-  'Eva',      'Lars',     'Freya',   'Hans',   'Greta',   'Pierre', 'Chloe',
-  'Mohammed', 'Leila',    'Carlos',  'Maria',  'Antonio', 'Marta',  'Igor',
-  'Nina',     'Satoshi',  'Akira'
+  'John',     'Jane',     'Michael', 'Emily',    'David',   'Sarah',   'Robert',
+  'Jessica',  'Liam',     'Emma',    'Noah',     'Olivia',  'Aiden',   'Sophia',
+  'Jackson',  'Isabella', 'Lucas',   'Mia',      'Ethan',   'Amelia',  'Mason',
+  'Harper',   'Logan',    'Ella',    'Mateo',    'Camila',  'Ben',     'Léa',
+  'Arjun',    'Saanvi',   'Wei',     'Mei',      'Ahmed',   'Aisha',   'Alejandro',
+  'Ananya',   'Hiroshi',  'Yuki',    'Fatima',   'Omar',    'Hannah',  'Sophie',
+  'Dmitry',   'Irina',    'Juan',    'Elena',    'Mario',   'Lucia',   'Samuel',
+  'Eva',      'Lars',     'Freya',   'Hans',     'Greta',   'Pierre',  'Chloe',
+  'Mohammed', 'Leila',    'Carlos',  'Maria',    'Antonio', 'Marta',   'Igor',
+  'Nina',     'Satoshi',  'Akira',   'Isla',     'Zara',    'Oscar',   'Theo',
+  'Violet',   'James',    'Victoria','Max',      'Eliza',   'Henry',   'Grace',
+  'Sofia',    'Ella',     'Evelyn',  'Charlotte','Lily',    'Eva',     'Alice',
+  'George',   'Hazel',    'Arthur',  'Freddie',  'Hugo',    'Florence','Sebastian',
+  'Leo',      'Matilda',  'Oliver',  'Aria',     'Edward',  'Aurora',  'Benjamin',
+  'Rosie',    'Lucy',     'Jack',    'Mila',     'Daniel',  'Maya',    'Samuel',
+  'Rory',     'Ava',      'Harvey',  'Amber',    'Finn',    'Daisy',   'Archie'
 ];
 
 const surnames = [
-  'Smith',     'Johnson',   'Williams', 'Jones',    'Brown',   'Davis',
-  'Miller',    'Wilson',    'Taylor',   'Anderson', 'Thomas',  'Moore',
-  'Martin',    'Jackson',   'Thompson', 'White',    'Lopez',   'Gonzalez',
-  'Perez',     'Sanchez',   'Ramirez',  'Torres',   'Nguyen',  'Kim',
-  'Chen',      'Wang',      'Singh',    'Patel',    'Kumar',   'Das',
-  'Sharma',    'Gupta',     'Ibrahim',  'Hassan',   'Garcia',  'Martinez',
-  'Rodriguez', 'Hernandez', 'Lee',      'Walker',   'Hall',    'Young',
-  'Allen',     'King',      'Scott',    'Green',    'Adams',   'Baker',
-  'Nelson',    'Carter',    'Mitchell', 'Perez',    'Roberts', 'Turner',
-  'Phillips',  'Campbell',  'Parker',   'Evans',    'Edwards', 'Collins',
-  'Stewart',   'Morris',    'Morales',  'Murphy',   'Cook',    'Rogers'
+  'Smith',     'Johnson',   'Williams', 'Jones',    'Brown',    'Davis',
+  'Miller',    'Wilson',    'Taylor',   'Anderson', 'Thomas',   'Moore',
+  'Martin',    'Jackson',   'Thompson', 'White',    'Lopez',    'Gonzalez',
+  'Perez',     'Sanchez',   'Ramirez',  'Torres',   'Nguyen',   'Kim',
+  'Chen',      'Wang',      'Singh',    'Patel',    'Kumar',    'Das',
+  'Sharma',    'Gupta',     'Ibrahim',  'Hassan',   'Garcia',   'Martinez',
+  'Rodriguez', 'Hernandez', 'Lee',      'Walker',   'Hall',     'Young',
+  'Allen',     'King',      'Scott',    'Green',    'Adams',    'Baker',
+  'Nelson',    'Carter',    'Mitchell', 'Perez',    'Roberts',  'Turner',
+  'Phillips',  'Campbell',  'Parker',   'Evans',    'Edwards',  'Collins',
+  'Stewart',   'Morris',    'Morales',  'Murphy',   'Cook',     'Rogers',
+  'Watson',    'Brooks',    'Kelly',    'Reed',     'Foster',   'Price',
+  'Ward',      'Sanders',   'Peterson', 'Gray',     'Ross',     'Hughes',
+  'Powell',    'Russell',   'Sullivan', 'Howard',   'Butler',   'Bell',
+  'James',     'Bennett',   'Wood',     'Barnes',   'Long',     'Cooper',
+  'Flores',    'Fisher',    'Marshall', 'Bishop',   'Day',      'Fox'
 ];
 
 function getRandomElement(arr) {
@@ -50,7 +61,7 @@ function generateRandomDigits(length) {
 }
 
 function generateRandomGmail() {
-  const start_digits = generateRandomDigits(3);
+  const start_digits = generateRandomDigits(4);
   const name = getRandomElement(names);
   const surname = getRandomElement(surnames);
   const end_digits = generateRandomDigits(4);
@@ -83,7 +94,7 @@ parentPort.on('message', (message) => {
     console.log(`Worker ${workerIndex} - Starting voting process ${i + 1} of ${
         votesPerWorker}`);
 
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
     await page.setViewport({width: 1080, height: 1024});
     const mail = generateRandomGmail();
